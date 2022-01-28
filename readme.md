@@ -1,2 +1,2 @@
 # homography    
-## learning about homography and fixing skewed images with OpenCV    
+learning about homography and fixing skewed images with OpenCV    

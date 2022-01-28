@@ -1,1 +1,7 @@
 https://blog.ekbana.com/skew-correction-using-corner-detectors-and-homography-fda345e42e65
+
+using miniconda and numpy, opencv and matplotlib in Windows 10
+
+can follow these steps:
+> conda create --name homography opencv numpy matplotlib
+> conda activate homography
