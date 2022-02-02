@@ -1,7 +1,13 @@
 https://blog.ekbana.com/skew-correction-using-corner-detectors-and-homography-fda345e42e65
+https://stackoverflow.com/questions/64860785/opencv-using-canny-and-shi-tomasi-to-detect-round-corners-of-a-playing-card
+https://docs.opencv.org/4.x/d9/dab/tutorial_homography.html
+https://stackoverflow.com/questions/22656698/perspective-correction-in-opencv-using-python
 
 using miniconda and numpy, opencv and matplotlib in Windows 10
 
 can follow these steps:
 > conda create --name homography opencv numpy matplotlib
 > conda activate homography
+
+notes:
+with Shi-Tomasi and cv2.goodFeaturesToTrack(), it seems like it's only really effective for sharp corners and not rounded ones.
