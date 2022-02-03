@@ -7,6 +7,32 @@ import matplotlib.pyplot as plot
 # test.png has more rounded top corners while test2.png has sharper corners
 image = cv2.imread("test_images/buildingedit.png")
 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+SELECTED_CORNERS = []
+
+def click(event):
+    # TODO: show point clicked on image?
+    SELECTED_CORNERS.append((event.x, event.y))
+    
+    # once 4 corners selected, close image
+    if len(SELECTED_CORNERS) == 4:
+        print(SELECTED_CORNERS)
+        plot.close()
+
+def collect_corners(image):
+    height = image.shape[0]
+    width = image.shape[1]
+    
+    fig, ax = plot.subplots()
+    ax.imshow(image)
+    
+    ax.set_ylim([height, 0])
+    ax.set_xlim([0, width])
+    ax.set_title("select corners")
+    
+    cid = fig.canvas.mpl_connect('button_press_event', click)
+    plot.show()
+    
     
 def get_destination_points(corners):
     """
@@ -180,14 +206,14 @@ def detect_corners_from_contour(canvas, contour, image):
     epsilon = 0.02 * cv2.arcLength(contour, True)
     approx_corners = cv2.approxPolyDP(contour, epsilon, True)
     cv2.drawContours(canvas, approx_corners, -1, (255, 255, 0), 10)
-    approx_corners = sorted(np.concatenate(approx_corners).tolist())
+    approx_corners = [(438, 141), (1146, 54), (60, 884), (1565, 877)]#sorted(np.concatenate(approx_corners).tolist())
     print("\nThe corner points are ...\n")
     for index, corner in enumerate(approx_corners):
         char = chr(65 + index)
         print(f"{char}:{corner}")
         cv2.putText(canvas, char, tuple(corner), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
     
-    approx_corners = [approx_corners[i] for i in [0, 2, 1, 3]]
+    #approx_corners = [approx_corners[i] for i in [0, 2, 1, 3]]
     
     plot.imshow(canvas)
     plot.title("corner points")
@@ -211,4 +237,6 @@ def better_skew_correction(image):
 
 #get_corners(image)
 
-better_skew_correction(image)
+#better_skew_correction(image)
+
+collect_corners(image)
