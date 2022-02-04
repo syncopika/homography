@@ -3,6 +3,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plot
+from matplotlib.patches import Circle
 
 # test.png has more rounded top corners while test2.png has sharper corners
 image = cv2.imread("test_images/buildingedit.png")
@@ -10,29 +11,36 @@ image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 SELECTED_CORNERS = []
 
-def click(event):
-    # TODO: show point clicked on image?
-    SELECTED_CORNERS.append((event.x, event.y))
-    
-    # once 4 corners selected, close image
-    if len(SELECTED_CORNERS) == 4:
-        print(SELECTED_CORNERS)
-        plot.close()
+class CornerSelectImage:
+    def __init__(self, image):
+        self.fig, self.ax = plot.subplots()
+        self.selected_corners = []
+        self.ax.imshow(image)
+        #height = image.shape[0]
+        #width = image.shape[1]
+        #self.ax.set_ylim([height, 0])
+        #self.ax.set_xlim([0, width])
+        self.ax.set_title("select corners")
+        self.fig.canvas.mpl_connect('button_press_event', self._click)
+        plot.show()
+        
+    def _click(self, event):
+        self.selected_corners.append((event.xdata, event.ydata))
+        self.ax.add_patch(Circle((event.xdata, event.ydata), radius=10, color='red'))
+        self.fig.canvas.draw()
+        
+        # once 4 corners selected, close image
+        if len(self.selected_corners) == 4:
+            plot.close()
+
 
 def collect_corners(image):
-    height = image.shape[0]
-    width = image.shape[1]
+    corner_picker = CornerSelectImage(image)
     
-    fig, ax = plot.subplots()
-    ax.imshow(image)
+    # TODO: reorganize points such that they come in
+    # the special order noted in the tutorial (see below)
     
-    ax.set_ylim([height, 0])
-    ax.set_xlim([0, width])
-    ax.set_title("select corners")
-    
-    cid = fig.canvas.mpl_connect('button_press_event', click)
-    plot.show()
-    
+    return corner_picker.selected_corners
     
 def get_destination_points(corners):
     """
@@ -206,14 +214,15 @@ def detect_corners_from_contour(canvas, contour, image):
     epsilon = 0.02 * cv2.arcLength(contour, True)
     approx_corners = cv2.approxPolyDP(contour, epsilon, True)
     cv2.drawContours(canvas, approx_corners, -1, (255, 255, 0), 10)
-    approx_corners = [(438, 141), (1146, 54), (60, 884), (1565, 877)]#sorted(np.concatenate(approx_corners).tolist())
+    approx_corners = sorted(np.concatenate(approx_corners).tolist())
     print("\nThe corner points are ...\n")
     for index, corner in enumerate(approx_corners):
         char = chr(65 + index)
         print(f"{char}:{corner}")
         cv2.putText(canvas, char, tuple(corner), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
     
-    #approx_corners = [approx_corners[i] for i in [0, 2, 1, 3]]
+    # notice the order of the corner points is important
+    approx_corners = [approx_corners[i] for i in [0, 2, 1, 3]]
     
     plot.imshow(canvas)
     plot.title("corner points")
@@ -222,21 +231,12 @@ def detect_corners_from_contour(canvas, contour, image):
     return approx_corners
     
     
-def better_skew_correction(image):
-    filtered_image = apply_filter(image)
-    threshold_image = apply_threshold(filtered_image)
-    canvas, largest_contour = detect_contour(threshold_image, image.shape)
-    corners = detect_corners_from_contour(canvas, largest_contour, image)
+def skew_correction(image):
+    # choosing the corners yourself is better than trying to use a contour I think
+    corners = collect_corners(image)
     destination_corners, height, width = get_destination_points(corners)
-    #destination_corners = np.float32([(0,0), (image.shape[1]-1, 0), (0, image.shape[0]-1), (image.shape[1]-1, image.shape[0]-1)])
     unwarp(image, np.float32(corners), destination_corners)
 
-#plot.imshow(image)
-#plot.title("test image")
-#plot.show()
 
-#get_corners(image)
+skew_correction(image)
 
-#better_skew_correction(image)
-
-collect_corners(image)

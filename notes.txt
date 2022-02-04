@@ -2,6 +2,7 @@ https://blog.ekbana.com/skew-correction-using-corner-detectors-and-homography-fd
 https://stackoverflow.com/questions/64860785/opencv-using-canny-and-shi-tomasi-to-detect-round-corners-of-a-playing-card
 https://docs.opencv.org/4.x/d9/dab/tutorial_homography.html
 https://stackoverflow.com/questions/22656698/perspective-correction-in-opencv-using-python
+https://matplotlib.org/stable/users/explain/event_handling.html -> pay attention to the diff between event.x and event.xdata
 
 using miniconda and numpy, opencv and matplotlib in Windows 10
 
