@@ -24,3 +24,6 @@ I recommend using miniconda. With miniconda installed you can run the following 
 ## next steps:    
 Now we can get a mostly perspective-corrected image. With this image, I guess the next step would be to figure out how to create a 3D representation of it in Blender (just the face of the building of course). Is that particularly useful though? I dunno, maybe? But it would be neat I think. :)    
     
+## acknowledgements:    
+many thanks to Ashuta's great tutorial on homography: https://blog.ekbana.com/skew-correction-using-corner-detectors-and-homography-fda345e42e65    
+    
