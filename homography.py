@@ -58,5 +58,6 @@ def skew_correction(image):
     unwarp(image, np.float32(corners), destination_corners)
 
 
-skew_correction(image)
+if __name__ == "__main__":
+    skew_correction(image)
 
