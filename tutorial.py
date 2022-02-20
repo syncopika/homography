@@ -163,9 +163,9 @@ def apply_filter(image):
     grayscale = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     kernel = np.ones((5, 5), np.float32) / 15
     filtered = cv2.filter2D(grayscale, -1, kernel)
-    # plot.imshow(cv2.cvtColor(filtered, cv2.COLOR_BGR2RGB))
-    # plot.title("filtered image")
-    # plot.show()
+    plot.imshow(cv2.cvtColor(filtered, cv2.COLOR_BGR2RGB))
+    plot.title("filtered image")
+    plot.show()
     
     return filtered
 

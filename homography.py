@@ -8,7 +8,6 @@ from tutorial import get_destination_points, unwarp
 image = cv2.imread("test_images/building.png")
 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-SELECTED_CORNERS = []
 
 class CornerSelectImage:
     def __init__(self, image):
@@ -59,5 +58,6 @@ def skew_correction(image):
     unwarp(image, np.float32(corners), destination_corners)
 
 
-skew_correction(image)
+if __name__ == "__main__":
+    skew_correction(image)
 
